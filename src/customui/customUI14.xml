@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<!--
+  Remittance Allocation Engine — Custom Ribbon UI (Office 2010+)
+  File: customUI14.xml
+  Embedded in XLSM under: customUI/customUI14.xml
+
+  Tab: "Remittance" added to Excel ribbon.
+  Groups:
+    1. Process       — Quick actions for processing remittances
+    2. Payors        — Payor management
+    3. Internal Data — Data Model management
+    4. Tools         — Utilities and help
+-->
+<customUI xmlns="http://schemas.microsoft.com/office/2009/07/customui"
+          onLoad="Ribbon_OnLoad">
+
+  <ribbon startFromScratch="false">
+    <tabs>
+      <tab id="tabRemittance" label="Remittance Engine" insertBeforeQ="TabHome">
+
+        <!-- ================================================
+             GROUP 1: PROCESS REMITTANCE
+             ================================================ -->
+        <group id="grpProcess" label="Process">
+
+          <button id="btnProcessRemittance"
+                  label="Process Remittance"
+                  size="large"
+                  imageMso="DataFormCreate"
+                  screentip="Process a new remittance file"
+                  supertip="Open the process wizard to import a remittance file and generate the allocation breakdown."
+                  onAction="Ribbon_ProcessRemittance"/>
+
+          <button id="btnQuickProcess"
+                  label="Quick Process"
+                  size="normal"
+                  imageMso="TasksFromOutlook"
+                  screentip="Quick process using last payor"
+                  supertip="Immediately open a file picker using the last selected payor, skipping the wizard."
+                  onAction="Ribbon_QuickProcess"/>
+
+          <separator id="sepProcess1"/>
+
+          <button id="btnShowDashboard"
+                  label="Dashboard"
+                  size="normal"
+                  imageMso="HomePageView"
+                  screentip="Show the main dashboard"
+                  supertip="Return to the Remittance Allocation Engine dashboard."
+                  onAction="Ribbon_ShowDashboard"/>
+
+        </group>
+
+        <!-- ================================================
+             GROUP 2: PAYORS
+             ================================================ -->
+        <group id="grpPayors" label="Payors">
+
+          <button id="btnManagePayors"
+                  label="Manage Payors"
+                  size="large"
+                  imageMso="RecordsAllRecords"
+                  screentip="Open the Payor Manager"
+                  supertip="View, add, edit, delete, and duplicate payor configurations."
+                  onAction="Ribbon_ManagePayors"/>
+
+          <button id="btnNewPayor"
+                  label="New Payor"
+                  size="normal"
+                  imageMso="RecordNew"
+                  screentip="Add a new payor configuration"
+                  supertip="Open the Payor Setup Wizard to configure a new payor from scratch."
+                  onAction="Ribbon_NewPayor"/>
+
+          <button id="btnImportPayorConfig"
+                  label="Import Config"
+                  size="normal"
+                  imageMso="ImportSavedExports"
+                  screentip="Import a payor configuration from JSON"
+                  supertip="Import a previously exported payor configuration (.json file)."
+                  onAction="Ribbon_ImportPayorConfig"/>
+
+        </group>
+
+        <!-- ================================================
+             GROUP 3: INTERNAL DATA
+             ================================================ -->
+        <group id="grpData" label="Internal Data">
+
+          <button id="btnRefreshData"
+                  label="Refresh Data"
+                  size="large"
+                  imageMso="RefreshAll"
+                  screentip="Import/refresh the internal data model"
+                  supertip="Open the Data Refresh wizard to import updated internal invoice data (300K+ records)."
+                  onAction="Ribbon_RefreshData"/>
+
+          <button id="btnDataModelStatus"
+                  label="Data Status"
+                  size="normal"
+                  imageMso="DatabaseProperties"
+                  screentip="View internal data model status"
+                  supertip="Display the current status of the internal data model: record count, columns, and last refresh."
+                  onAction="Ribbon_DataModelStatus"/>
+
+          <button id="btnInvalidateCache"
+                  label="Clear Cache"
+                  size="normal"
+                  imageMso="ClearAllFilters"
+                  screentip="Clear the lookup cache"
+                  supertip="Force a fresh reload of lookup data on the next processing run."
+                  onAction="Ribbon_InvalidateCache"/>
+
+        </group>
+
+        <!-- ================================================
+             GROUP 4: TOOLS
+             ================================================ -->
+        <group id="grpTools" label="Tools">
+
+          <button id="btnViewAuditLog"
+                  label="Audit Log"
+                  size="normal"
+                  imageMso="FindDialog"
+                  screentip="View the audit log"
+                  supertip="Open the audit log sheet showing all processing history and system events."
+                  onAction="Ribbon_AuditLog"/>
+
+          <button id="btnTestRegex"
+                  label="Regex Tester"
+                  size="normal"
+                  imageMso="DataFormFind"
+                  screentip="Test a regex pattern"
+                  supertip="Open a simple utility to test invoice number extraction regex patterns against sample data."
+                  onAction="Ribbon_RegexTester"/>
+
+          <separator id="sepTools1"/>
+
+          <button id="btnAbout"
+                  label="About"
+                  size="normal"
+                  imageMso="Help"
+                  screentip="About Remittance Allocation Engine"
+                  supertip="Display version information and application details."
+                  onAction="Ribbon_About"/>
+
+        </group>
+
+      </tab>
+    </tabs>
+  </ribbon>
+</customUI>

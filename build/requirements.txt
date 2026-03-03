@@ -1,0 +1,12 @@
+# Python requirements for build helper (build.py)
+# No external packages required — uses stdlib only.
+# Optional packages for enhanced functionality:
+
+# If you want to test openpyxl-based workbook creation (no VBA support):
+# openpyxl>=3.1.0
+
+# If you want xlwings-based VBA injection (requires Excel on Windows):
+# xlwings>=0.30.0
+
+# For linting VBA source files via external tools:
+# vba-lint (install via npm: npm install -g vba-lint)
