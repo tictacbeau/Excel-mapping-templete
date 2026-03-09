@@ -221,6 +221,7 @@ End Function
 '  Populate from JSON
 ' ===========================================================
 Public Sub FromJson(sJson As String)
+    On Error GoTo FromJsonErr
     PayorId = modUtils.JsonGetString(sJson, "payorId", "")
     TemplateType = modUtils.JsonGetString(sJson, "templateType", TMPL_SINGLE)
     TemplateName = modUtils.JsonGetString(sJson, "templateName", "")
@@ -242,6 +243,10 @@ Public Sub FromJson(sJson As String)
     Dim sArr As String
     sArr = modUtils.JsonGetRawValue(sJson, "cells", "[]")
     ParseCellsFromJsonArray sArr
+    Exit Sub
+FromJsonErr:
+    ' Parsing error — leave template in partially-initialized state
+    Err.Clear
 End Sub
 
 ' ===========================================================

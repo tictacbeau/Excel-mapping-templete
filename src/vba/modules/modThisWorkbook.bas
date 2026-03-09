@@ -1,4 +1,6 @@
 Attribute VB_Name = "modThisWorkbook"
+Option Explicit
+
 ' ============================================================
 '  ThisWorkbook Module Stubs
 '

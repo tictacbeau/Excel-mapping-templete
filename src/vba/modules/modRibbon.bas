@@ -11,7 +11,11 @@ Private m_Ribbon As IRibbonUI
 
 ' Called when ribbon loads
 Public Sub Ribbon_OnLoad(ribbon As IRibbonUI)
+    On Error GoTo RibbonLoadErr
     Set m_Ribbon = ribbon
+    Exit Sub
+RibbonLoadErr:
+    ' Non-fatal: ribbon object unavailable
 End Sub
 
 ' Invalidate ribbon (force re-evaluate getEnabled/getVisible)
