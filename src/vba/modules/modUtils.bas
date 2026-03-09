@@ -197,7 +197,7 @@ Private Function JsonExtractRawValue(sJson As String, sKey As String) As String
                 nEnd = nEnd + 1
             End If
         Loop
-        JsonExtractRawValue = Mid(sJson, nPos, nEnd - nPos - 1)
+        JsonExtractRawValue = Mid(sJson, nPos, nEnd - nPos)
     Else
         ' Scalar — delegate to regular extractor
         JsonExtractRawValue = JsonExtractValue(sJson, sKey)
@@ -620,6 +620,7 @@ Public Function GetSetting(sKey As String, sDefault As String) As String
     For i = 2 To ws.Cells(ws.Rows.Count, 1).End(xlUp).Row
         If CStr(ws.Cells(i, 1).Value) = sKey Then
             GetSetting = CStr(ws.Cells(i, 2).Value)
+            On Error GoTo 0
             Exit Function
         End If
     Next i

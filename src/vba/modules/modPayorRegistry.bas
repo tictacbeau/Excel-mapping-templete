@@ -227,10 +227,9 @@ Public Function DuplicatePayor(sSourceId As String, sNewName As String) As clsPa
     oNew.CreatedDate = Now()
     oNew.LastModified = Now()
 
-    ' Clone templates
-    DuplicatePayorTemplates sSourceId, oNew
-
+    ' Save first so oNew.PayorId is populated before template duplication
     If SavePayor(oNew) Then
+        DuplicatePayorTemplates sSourceId, oNew
         Set DuplicatePayor = oNew
     Else
         Set DuplicatePayor = Nothing
@@ -506,28 +505,28 @@ Private Sub PayorToRow(oPayor As clsPayor, ws As Worksheet, nRow As Long)
     ws.Cells(nRow, REG_COL_LAST_MODIFIED).Value = oPayor.LastModified
     ws.Cells(nRow, REG_COL_CREATED).Value = oPayor.CreatedDate
 
-    ' Build parse rules JSON
+    ' Build parse rules JSON — escape all string values
     Dim sRules As String
     sRules = "{" & _
-        """invoiceLayout"":""" & oPayor.InvoiceLayout & """," & _
-        """invoiceDelimiter"":""" & oPayor.InvoiceDelimiter & """," & _
-        """invoiceRegex"":""" & oPayor.InvoiceRegex & """," & _
+        """invoiceLayout"":""" & EscJson(oPayor.InvoiceLayout) & """," & _
+        """invoiceDelimiter"":""" & EscJson(oPayor.InvoiceDelimiter) & """," & _
+        """invoiceRegex"":""" & EscJson(oPayor.InvoiceRegex) & """," & _
         """invoiceColumn"":" & oPayor.InvoiceColumn & "," & _
         """amountColumn"":" & oPayor.AmountColumn & "," & _
-        """amountDelimiter"":""" & oPayor.AmountDelimiter & """," & _
+        """amountDelimiter"":""" & EscJson(oPayor.AmountDelimiter) & """," & _
         """headerRowCount"":" & oPayor.HeaderRowCount & "," & _
         """invoiceRow"":" & oPayor.InvoiceRow & "," & _
         """amountRow"":" & oPayor.AmountRow & "," & _
-        """duplicateAction"":""" & oPayor.DuplicateAction & """" & _
+        """duplicateAction"":""" & EscJson(oPayor.DuplicateAction) & """" & _
         "}"
     ws.Cells(nRow, REG_COL_PARSE_RULES).Value = sRules
 
-    ' Build aliases JSON array
+    ' Build aliases JSON array — escape alias strings
     Dim sAliases As String: sAliases = "["
     Dim i As Integer
     For i = 0 To oPayor.AliasCount - 1
         If i > 0 Then sAliases = sAliases & ","
-        sAliases = sAliases & """" & oPayor.Aliases(i) & """"
+        sAliases = sAliases & """" & EscJson(oPayor.Aliases(i)) & """"
     Next i
     sAliases = sAliases & "]"
     ws.Cells(nRow, REG_COL_ALIASES).Value = sAliases
@@ -537,18 +536,24 @@ End Sub
 Private Function BuildCellJson(ws As Worksheet, nRow As Long) As String
     Dim j As String
     j = "{"
-    j = j & """section"":""" & ws.Cells(nRow, TDB_COL_SECTION).Value & ""","
+    j = j & """section"":""" & EscJson(ws.Cells(nRow, TDB_COL_SECTION).Value) & ""","
     j = j & """rowOffset"":" & CStr(ws.Cells(nRow, TDB_COL_ROW_OFFSET).Value) & ","
     j = j & """col"":" & CStr(ws.Cells(nRow, TDB_COL_COL_NUM).Value) & ","
-    j = j & """cellType"":""" & ws.Cells(nRow, TDB_COL_CELL_TYPE).Value & ""","
-    j = j & """fieldMap"":""" & ws.Cells(nRow, TDB_COL_FIELD_MAP).Value & ""","
-    j = j & """defaultValue"":""" & ws.Cells(nRow, TDB_COL_DEFAULT_VALUE).Value & ""","
+    j = j & """cellType"":""" & EscJson(ws.Cells(nRow, TDB_COL_CELL_TYPE).Value) & ""","
+    j = j & """fieldMap"":""" & EscJson(ws.Cells(nRow, TDB_COL_FIELD_MAP).Value) & ""","
+    j = j & """defaultValue"":""" & EscJson(ws.Cells(nRow, TDB_COL_DEFAULT_VALUE).Value) & ""","
     j = j & """formatJson"":" & IIf(ws.Cells(nRow, TDB_COL_FORMAT_JSON).Value = "", "{}", ws.Cells(nRow, TDB_COL_FORMAT_JSON).Value) & ","
     j = j & """isDynamic"":" & IIf(CBool(ws.Cells(nRow, TDB_COL_IS_DYNAMIC).Value), "true", "false") & ","
-    j = j & """mergeRef"":""" & ws.Cells(nRow, TDB_COL_MERGE_REF).Value & ""","
-    j = j & """formula"":""" & ws.Cells(nRow, TDB_COL_FORMULA).Value & """"
+    j = j & """mergeRef"":""" & EscJson(ws.Cells(nRow, TDB_COL_MERGE_REF).Value) & ""","
+    j = j & """formula"":""" & EscJson(ws.Cells(nRow, TDB_COL_FORMULA).Value) & """"
     j = j & "}"
     BuildCellJson = j
+End Function
+
+Private Function EscJson(s As String) As String
+    s = Replace(s, "\", "\\")
+    s = Replace(s, """", "\""")
+    EscJson = s
 End Function
 
 Private Function BuildPayorJson(oPayor As clsPayor) As String
