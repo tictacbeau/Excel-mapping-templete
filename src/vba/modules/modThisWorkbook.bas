@@ -47,9 +47,18 @@ Option Explicit
 '     Dim sVal As String: sVal = Trim(rng.Value)
 '     If sVal = "Open >" Then
 '         Dim r As Long: r = rng.Row
-'         If r = 7 Then modMain.Process_Remittance
-'         If r = 7 And rng.Column >= 5 Then modMain.Open_PayorManager
-'         If r = 13 Then modMain.Open_DataRefresh
-'         If r = 13 And rng.Column >= 5 Then modMain.Open_AuditLog
+'         If r = 7 Then
+'             If rng.Column >= 5 Then
+'                 modMain.Open_PayorManager
+'             Else
+'                 modMain.Process_Remittance
+'             End If
+'         ElseIf r = 13 Then
+'             If rng.Column >= 5 Then
+'                 modMain.Open_AuditLog
+'             Else
+'                 modMain.Open_DataRefresh
+'             End If
+'         End If
 '     End If
 ' End Sub

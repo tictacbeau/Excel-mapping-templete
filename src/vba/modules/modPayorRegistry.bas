@@ -543,7 +543,13 @@ Private Function BuildCellJson(ws As Worksheet, nRow As Long) As String
     j = j & """fieldMap"":""" & EscJson(ws.Cells(nRow, TDB_COL_FIELD_MAP).Value) & ""","
     j = j & """defaultValue"":""" & EscJson(ws.Cells(nRow, TDB_COL_DEFAULT_VALUE).Value) & ""","
     j = j & """formatJson"":" & IIf(ws.Cells(nRow, TDB_COL_FORMAT_JSON).Value = "", "{}", ws.Cells(nRow, TDB_COL_FORMAT_JSON).Value) & ","
-    j = j & """isDynamic"":" & IIf(CBool(ws.Cells(nRow, TDB_COL_IS_DYNAMIC).Value), "true", "false") & ","
+    ' CBool can raise type-mismatch on arbitrary cell values — guard with On Error
+    Dim bDynamic As Boolean: bDynamic = False
+    On Error Resume Next
+    bDynamic = CBool(ws.Cells(nRow, TDB_COL_IS_DYNAMIC).Value)
+    If Err.Number <> 0 Then bDynamic = False: Err.Clear
+    On Error GoTo 0
+    j = j & """isDynamic"":" & IIf(bDynamic, "true", "false") & ","
     j = j & """mergeRef"":""" & EscJson(ws.Cells(nRow, TDB_COL_MERGE_REF).Value) & ""","
     j = j & """formula"":""" & EscJson(ws.Cells(nRow, TDB_COL_FORMULA).Value) & """"
     j = j & "}"

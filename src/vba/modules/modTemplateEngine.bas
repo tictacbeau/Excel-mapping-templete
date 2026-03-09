@@ -237,8 +237,9 @@ Private Sub ParseOnePerRowLayout(oPayor As clsPayor, oRemittance As clsRemittanc
             If sInv <> "" Then
                 Dim sRowData As String
                 sRowData = BuildRowDataJson(ws, i)
-                oRemittance.AddInvoice sInv, dAmt, _
-                    modUtils.CleanCellValue(ws.Cells(i, 3).Value), sRowData
+                ' Date column is not configured per-payor; pass empty string.
+                ' Date values are available via sRowData (raw JSON) if needed.
+                oRemittance.AddInvoice sInv, dAmt, "", sRowData
             End If
         Next j
 NextRow:

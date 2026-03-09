@@ -67,12 +67,12 @@ Public Const CELLTYPE_BLANK As String = "BLANK"     ' Intentionally empty (white
 Public Const CELLTYPE_LABEL As String = "LABEL"     ' Static label (gray)
 
 ' ---- Cell Type Display Colors (Excel Long values) ----------
-' Blue for DATA fields
-Public Const COLOR_DATA As Long = 13395456          ' #CCE5FF (soft blue)
-' Green for LOOKUP fields
+' Blue for DATA fields: RGB(204, 229, 255) = #CCE5FF (soft blue)
+Public Const COLOR_DATA As Long = 16770508          ' #CCE5FF (soft blue)
+' Green for LOOKUP fields: RGB(204, 255, 204) = #CCFFCC (soft green)
 Public Const COLOR_LOOKUP As Long = 13434828        ' #CCFFCC (soft green)
-' Yellow for CALC fields
-Public Const COLOR_CALC As Long = 16777164          ' #FFFF9C (soft yellow)
+' Yellow for CALC fields: RGB(255, 255, 156) = #FFFF9C (soft yellow)
+Public Const COLOR_CALC As Long = 10289151          ' #FFFF9C (soft yellow)
 ' White / hatched for BLANK
 Public Const COLOR_BLANK As Long = 16777215         ' #FFFFFF
 ' Light gray for LABEL

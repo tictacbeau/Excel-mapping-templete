@@ -38,8 +38,9 @@ Private m_CellCount As Integer
 
 ' ---- Body section first/last row in full template ----------
 ' Computed when building: first row index (1-based) of body section
-Public BodyStartRow As Integer
-Public BodyEndRow As Integer
+' Use Long to avoid Integer overflow with large invoice counts (>32767 rows)
+Public BodyStartRow As Long
+Public BodyEndRow As Long
 
 ' ---- Default formatting profiles ---------------------------
 Public DefaultHeaderFormatJson As String
